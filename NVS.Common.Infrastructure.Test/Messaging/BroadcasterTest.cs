@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NVS.Common.Infrastructure.Messaging;
 
-namespace NVS.Common.Infrastructure.Test
+namespace NVS.Common.Infrastructure.Messaging.Tests
 {
     [TestClass]
     public class BroadcasterTest
