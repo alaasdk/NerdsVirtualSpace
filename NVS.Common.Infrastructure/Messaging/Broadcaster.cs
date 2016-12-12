@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NVS.Common.Infrastructure.Messaging
 {
-    public class Broadcaster
+    public class Broadcaster : IBroadcaster
     {
         private class TagSubscriber
         {
@@ -88,8 +88,11 @@ namespace NVS.Common.Infrastructure.Messaging
         }
 
 
-        //TODO: ideas
+        //TODO:
         // * implement a queue to save the messages to the broadcaster locally and handle fails.
         // * single instance of broadcaster (singleton )
+        // * Async 
+        // * Caching
+        // * Client code  error handling 
     }
 }

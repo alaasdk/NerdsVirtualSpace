@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Messaging\Broadcaster.cs" />
+    <Compile Include="Messaging\IBroadcaster.cs" />
     <Compile Include="Messaging\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
