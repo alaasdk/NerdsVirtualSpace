@@ -12,13 +12,31 @@ namespace NVS.Common.Infrastructure.Messaging.Tests
         IBroadcaster _broadCaster;
 
         [TestInitialize()]
-        public void Startup()
+        public void Startup() 
         {
             _broadCaster = new Broadcaster();
         }
 
         [TestMethod]
-        public void Broadcaster_basicUsage()
+        public void subscribe_handler_called()
+        {
+            // Arrange Assert Act
+
+            var handlerCalled = false;
+
+            // Subscribe
+            string token = _broadCaster.Subscribe("mytag", (message) => { handlerCalled = true; });
+
+            // Send another one
+            _broadCaster.Publish(new TextMessage(payload: "content_msg2", tag: "mytag"));
+  
+            // Assert.
+            Assert.AreEqual<bool>(handlerCalled, true);
+        }
+
+
+        [TestMethod]
+        public void subscribe_handler_called_count()
         {
             var HandlerCallingCount = 0;
 
@@ -26,22 +44,39 @@ namespace NVS.Common.Infrastructure.Messaging.Tests
             _broadCaster.Publish(new TextMessage(payload: "content", tag: "mytag"));
 
             // Subscribe
-            string token = _broadCaster.Subscribe("mytag", (message) => { HandlerCallingCount++; });
+            _broadCaster.Subscribe("mytag", (message) => { HandlerCallingCount++; });
 
             // Send another one
             _broadCaster.Publish(new TextMessage(payload: "content_msg2", tag: "mytag"));
 
-            // Assert.
-            Assert.AreEqual<int>(HandlerCallingCount, 1);
-
-            // Unsubscribe.
-            _broadCaster.Unsubscribe(token);
-
-            // Send another one, nobody will recieve it.
+            // Send another one
             _broadCaster.Publish(new TextMessage(payload: "content_msg3", tag: "mytag"));
 
             // Assert.
-            Assert.AreEqual<int>(HandlerCallingCount, 1);
+            Assert.AreEqual<int>(HandlerCallingCount, 2);
+        }
+
+        [TestMethod()]
+        public void unsubscribe_successfully()
+        {
+            var HandlerCallingCount = 0;
+
+            // Subscribe
+            string token = _broadCaster.Subscribe("mytag", (message) => { HandlerCallingCount++; });
+
+            // Send message
+            _broadCaster.Publish(new TextMessage(payload: "content", tag: "mytag"));
+
+            // Send another one
+            _broadCaster.Publish(new TextMessage(payload: "content_msg2", tag: "mytag"));
+
+            _broadCaster.Unsubscribe(token);
+
+            // Send another one
+            _broadCaster.Publish(new TextMessage(payload: "content_msg3", tag: "mytag"));
+
+            // Assert.
+            Assert.AreEqual<int>(HandlerCallingCount, 2);
         }
     }
 }
