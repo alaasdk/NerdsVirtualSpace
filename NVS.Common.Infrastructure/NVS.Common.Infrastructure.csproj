@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Messaging\TextBroadcaster.cs" />
+    <Compile Include="Messaging\Broadcaster.cs" />
     <Compile Include="Messaging\IBroadcaster.cs" />
     <Compile Include="Messaging\IMessage.cs" />
     <Compile Include="Messaging\TextMessage.cs" />

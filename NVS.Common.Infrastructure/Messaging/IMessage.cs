@@ -1,8 +1,13 @@
 ﻿namespace NVS.Common.Infrastructure.Messaging
 {
-    public interface IMessage<T>
+    public interface IMessage
     {
-        T Payload { get; set; }
+        object Payload { get; set; }
         string Tag { get; set; }
+    }
+
+    public interface IMessage<T> : IMessage
+    {
+        new T Payload { get; set; }
     }
 }

@@ -2,10 +2,10 @@
 
 namespace NVS.Common.Infrastructure.Messaging
 {
-    public interface IBroadcaster<T> 
+    public interface IBroadcaster
     {
-        void Publish(IMessage<T> message);
-        string Subscribe(string tag, Action<IMessage<T>> handler);
+        void Publish(IMessage message);
+        string Subscribe(string tag, Action<IMessage> handler);
         bool Unsubscribe(string token);
     }
 }

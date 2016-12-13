@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace NVS.Common.Infrastructure.Messaging
 {
-    public class TextBroadcaster : IBroadcaster<string>
+    public class Broadcaster : IBroadcaster
     {
         Dictionary<string, List<TagSubscriber>> _tagsSubscribers;
         
-        public TextBroadcaster()
+        public Broadcaster()
         {
             _tagsSubscribers = new Dictionary<string, List<TagSubscriber>>();
         }
 
-        public string Subscribe(string tag, Action<IMessage<string>> handler)
+        public string Subscribe(string tag, Action<IMessage> handler)
         {
             if (!_tagsSubscribers.ContainsKey(tag))
             {
@@ -52,7 +52,7 @@ namespace NVS.Common.Infrastructure.Messaging
         }
 
 
-        public void Publish(IMessage<string> message)
+        public void Publish(IMessage message)
         {
             if (!_tagsSubscribers.ContainsKey(message.Tag))
             {
@@ -63,7 +63,7 @@ namespace NVS.Common.Infrastructure.Messaging
         }
 
 
-        private void PublishInternal(IMessage<string> message)
+        private void PublishInternal(IMessage message)
         {
             _tagsSubscribers[message.Tag].ForEach((subscriber) =>
             {
@@ -80,7 +80,7 @@ namespace NVS.Common.Infrastructure.Messaging
         private class TagSubscriber
         {
             public string token { get; set; }
-            public Action<IMessage<string>> handler { get; set; }
+            public Action<IMessage> handler { get; set; }
         }
 
         //TODO:

@@ -9,12 +9,12 @@ namespace NVS.Common.Infrastructure.Messaging.Tests
     [TestClass]
     public class BroadcasterTest
     {
-        IBroadcaster<string> _broadCaster;
+        IBroadcaster _broadCaster;
 
         [TestInitialize()]
         public void Startup()
         {
-            _broadCaster = new TextBroadcaster();
+            _broadCaster = new Broadcaster();
         }
 
         [TestMethod]
