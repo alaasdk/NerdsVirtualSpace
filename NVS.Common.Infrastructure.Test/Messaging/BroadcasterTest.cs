@@ -9,14 +9,13 @@ namespace NVS.Common.Infrastructure.Messaging.Tests
     [TestClass]
     public class BroadcasterTest
     {
-        IBroadcaster _broadCaster;
+        IBroadcaster<string> _broadCaster;
 
         [TestInitialize()]
         public void Startup()
         {
-            _broadCaster = new Broadcaster();
+            _broadCaster = new TextBroadcaster();
         }
-
 
         [TestMethod]
         public void Broadcaster_basicUsage()
@@ -24,13 +23,13 @@ namespace NVS.Common.Infrastructure.Messaging.Tests
             var HandlerCallingCount = 0;
 
             // Send message, nobody will recieve it
-            _broadCaster.Publish(new Message(payload: "content", tag: "mytag"));
+            _broadCaster.Publish(new TextMessage(payload: "content", tag: "mytag"));
 
             // Subscribe
             string token = _broadCaster.Subscribe("mytag", (message) => { HandlerCallingCount++; });
 
             // Send another one
-            _broadCaster.Publish(new Message(payload: "content_msg2", tag: "mytag"));
+            _broadCaster.Publish(new TextMessage(payload: "content_msg2", tag: "mytag"));
 
             // Assert.
             Assert.AreEqual<int>(HandlerCallingCount, 1);
@@ -39,7 +38,7 @@ namespace NVS.Common.Infrastructure.Messaging.Tests
             _broadCaster.Unsubscribe(token);
 
             // Send another one, nobody will recieve it.
-            _broadCaster.Publish(new Message(payload: "content_msg3", tag: "mytag"));
+            _broadCaster.Publish(new TextMessage(payload: "content_msg3", tag: "mytag"));
 
             // Assert.
             Assert.AreEqual<int>(HandlerCallingCount, 1);

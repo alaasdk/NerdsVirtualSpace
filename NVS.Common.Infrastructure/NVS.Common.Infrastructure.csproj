@@ -40,9 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Messaging\Broadcaster.cs" />
+    <Compile Include="Messaging\TextBroadcaster.cs" />
     <Compile Include="Messaging\IBroadcaster.cs" />
-    <Compile Include="Messaging\Message.cs" />
+    <Compile Include="Messaging\IMessage.cs" />
+    <Compile Include="Messaging\TextMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

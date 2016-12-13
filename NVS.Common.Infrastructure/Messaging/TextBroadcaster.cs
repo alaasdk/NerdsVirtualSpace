@@ -6,30 +6,22 @@ using System.Threading.Tasks;
 
 namespace NVS.Common.Infrastructure.Messaging
 {
-    public class Broadcaster : IBroadcaster
+    public class TextBroadcaster : IBroadcaster<string>
     {
-        private class TagSubscriber
-        {
-            public string token { get; set; }
-            public Action<Message> handler { get; set; }
-        }
-
         Dictionary<string, List<TagSubscriber>> _tagsSubscribers;
-
-        public Broadcaster()
+        
+        public TextBroadcaster()
         {
             _tagsSubscribers = new Dictionary<string, List<TagSubscriber>>();
         }
 
-
-        public string Subscribe(string tag, Action<Message> handler)
+        public string Subscribe(string tag, Action<IMessage<string>> handler)
         {
             if (!_tagsSubscribers.ContainsKey(tag))
             {
                 AddTag(tag);
             }
 
-                
             // generate token
             var token = Guid.NewGuid().ToString();
 
@@ -42,7 +34,7 @@ namespace NVS.Common.Infrastructure.Messaging
             return token;
         }
 
-        
+
         public bool Unsubscribe(string token)
         {
             foreach (var tagSubscribers in _tagsSubscribers)
@@ -60,21 +52,18 @@ namespace NVS.Common.Infrastructure.Messaging
         }
 
 
-
-        public void Publish(Message message)
+        public void Publish(IMessage<string> message)
         {
             if (!_tagsSubscribers.ContainsKey(message.Tag))
             {
                 AddTag(message.Tag);
                 return;
             }
-
-            Broadcast(message);
+            PublishInternal(message);
         }
 
 
-
-        private void Broadcast(Message message)
+        private void PublishInternal(IMessage<string> message)
         {
             _tagsSubscribers[message.Tag].ForEach((subscriber) =>
             {
@@ -88,11 +77,17 @@ namespace NVS.Common.Infrastructure.Messaging
         }
 
 
+        private class TagSubscriber
+        {
+            public string token { get; set; }
+            public Action<IMessage<string>> handler { get; set; }
+        }
+
         //TODO:
         // * implement a queue to save the messages to the broadcaster locally and handle fails.
         // * single instance of broadcaster (singleton )
         // * Async 
         // * Caching
-        // * Client code  error handling 
+        // * Client code error handling 
     }
 }
